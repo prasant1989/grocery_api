@@ -5,7 +5,7 @@ class CatalogsController < ApplicationController
   def index
     @catalogs = Catalog.all
 
-    render json: @catalogs
+    render json: { catalogs: @catalogs }
   end
 
   # GET /catalogs/1

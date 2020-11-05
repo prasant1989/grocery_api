@@ -1,11 +1,17 @@
 class CatalogsController < ApplicationController
+  include Pagy::Backend
   before_action :set_catalog, only: [:show, :update, :destroy]
 
   # GET /catalogs
   def index
-    @catalogs = Catalog.all
+    if params[:page] == "all"
+      @catalogs = Catalog.all
+      render json: { catalogs: @catalogs }
+    else
+      pagy, catalogs = pagy(Catalog.sorted)
+      render json: catalogs, meta: pagy_metadata(pagy,true), adapter: :json
+    end
 
-    render json: { catalogs: @catalogs }
   end
 
   # GET /catalogs/1
@@ -20,7 +26,7 @@ class CatalogsController < ApplicationController
     if @catalog.save
       render json: @catalog, status: :created, location: @catalog
     else
-      render json: @catalog.errors, status: :unprocessable_entity
+      render json: {error: @catalog.errors.full_messages.join(",")}, status: :unprocessable_entity
     end
   end
 
@@ -46,6 +52,6 @@ class CatalogsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def catalog_params
-      params.require(:catalog).permit(:name, :unit)
+      params.require(:catalog).permit(:name, :unit, :price, :image)
     end
 end

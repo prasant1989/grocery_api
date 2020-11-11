@@ -38,6 +38,26 @@ class OrdersController < ApplicationController
     @order.destroy
   end
 
+  #Pending Orders
+  def pending
+    render json: Order.pending_orders
+  end
+
+  #Fullfilled Orders
+  def fullfilled
+    render json: Order.fullfilled_orders
+  end
+
+  #POST Order fullfillment
+  def fullfill
+    head :ok
+  end
+
+  #POST Order Rejection
+  def reject
+    head :ok
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order

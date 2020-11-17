@@ -10,4 +10,9 @@ class OrderDetail < ApplicationRecord
   validates :item_name , presence: true
   validates :price, presence: true
   validates :quantity, presence: true
+
+
+  def fullfill_order_item
+    update_attributes(fullfilled: 1)
+  end
 end

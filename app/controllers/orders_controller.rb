@@ -1,9 +1,9 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :update, :destroy]
+  before_action :set_order, only: [:show, :update, :destroy,:reject, :fullfill]
 
   # GET /orders
   def index
-    @orders = Order.all
+    @orders = Order.pending_orders
 
     render json: @orders
   end
@@ -48,14 +48,34 @@ class OrdersController < ApplicationController
     render json: Order.fullfilled_orders
   end
 
+  #cancelled Orders
+  def cancelled
+    render json: Order.cancelled_orders
+  end
+
   #POST Order fullfillment
   def fullfill
-    head :ok
+    order_details = @order.order_details
+    params[:order].each do |order_to_fullfill|
+      if(order_to_fullfill[:checked] == 1)
+        order_detail = OrderDetail.find_by(id: order_to_fullfill[:id])
+        if order_detail.present?
+          order_detail.fullfill_order_item
+        else
+          @order.order_details.create( params[:order].last.permit!.merge(fullfilled:1).except(:checked))
+        end
+      end
+    end
+    @order.update_attributes(price: params[:totalPrice], status: 1, fullfilled_at: DateTime.now)
+    # @order = Order.find(params[:id])
+    # render json: Order
+    render json: @order
   end
 
   #POST Order Rejection
   def reject
-    head :ok
+    order = @order.cancelled!
+    render json: order
   end
 
   private

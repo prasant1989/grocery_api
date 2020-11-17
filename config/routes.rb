@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     collection do
       get :pending
       get :fullfilled
+      get :cancelled
     end
     member do
       get :details

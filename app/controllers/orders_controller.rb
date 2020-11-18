@@ -45,7 +45,7 @@ class OrdersController < ApplicationController
 
   #Fullfilled Orders
   def fullfilled
-    render json: Order.fullfilled_orders
+    render json: Order.fullfilled_orders, each_serializer: FullfilledOrderSerializer
   end
 
   #cancelled Orders

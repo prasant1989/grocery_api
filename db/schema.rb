@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_17_093535) do
+ActiveRecord::Schema.define(version: 2020_11_11_101454) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -52,9 +52,9 @@ ActiveRecord::Schema.define(version: 2020_11_17_093535) do
 
   create_table "order_details", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "item_name"
-    t.float "price"
+    t.float "price", default: 0.0
     t.bigint "catalog_id"
-    t.float "quantity"
+    t.float "quantity", default: 0.0
     t.string "unit"
     t.bigint "order_id", null: false
     t.boolean "fullfilled", default: false
@@ -69,10 +69,10 @@ ActiveRecord::Schema.define(version: 2020_11_17_093535) do
     t.string "user_id"
     t.datetime "order_date"
     t.integer "status", default: 0
+    t.float "price", default: 0.0
+    t.datetime "fullfilled_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.float "price"
-    t.datetime "fullfilled_at"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

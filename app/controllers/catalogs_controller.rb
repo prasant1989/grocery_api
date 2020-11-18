@@ -52,6 +52,6 @@ class CatalogsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def catalog_params
-      params.require(:catalog).permit(:name, :unit, :price, :image)
+      params.require(:catalog).permit(:name, :unit, :price, :image, :category_id)
     end
 end

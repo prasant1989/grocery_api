@@ -3,7 +3,9 @@ class CreateOrders < ActiveRecord::Migration[6.0]
     create_table :orders do |t|
       t.string :user_id
       t.datetime :order_date
-      t.boolean :status
+      t.integer :status, default: 0
+      t.float :price, default: 0.0
+      t.datetime :fullfilled_at
 
       t.timestamps
     end

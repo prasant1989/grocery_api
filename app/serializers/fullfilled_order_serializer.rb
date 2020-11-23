@@ -6,7 +6,10 @@ class FullfilledOrderSerializer < ActiveModel::Serializer
   end
 
   def order_details
-    object.order_details.group_by { |order_detail| order_detail.fullfilled ? :fullfilled : :rejected }
+    order_summary = object.order_details.group_by { |order_detail| order_detail.fullfilled ? :fullfilled : :rejected }
+    order_summary[:rejected] = [] if order_summary[:rejected].blank?
+    order_summary[:fullfilled] = [] if order_summary[:fullfilled].blank?
+    order_summary
   end
 
   def fullfilled_at

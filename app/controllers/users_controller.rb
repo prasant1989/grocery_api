@@ -3,9 +3,9 @@ class UsersController < ApplicationController
     user = User.new(user_params)
 
     if user.save
-      render json: {status: 'User created successfully'}, status: :created
+      render json: {status: 'User created successfully', success: true}, status: :created
     else
-      render json: { errors: user.errors.full_messages }, status: :bad_request
+      render json: {errors: user.errors.full_messages, success: false}, status: :bad_request
     end
   end
 
@@ -27,15 +27,15 @@ class UsersController < ApplicationController
 
     if user && user.authenticate(params[:password])
       auth_token = JsonWebToken.encode({user_id: user.id})
-      render json: {auth_token: auth_token}, status: :ok
+      render json: {auth_token: auth_token, success: true, user_id: user.id}, status: :ok
     else
-      render json: {error: 'Invalid username / password'}, status: :unauthorized
+      render json: {error: 'Invalid username / password', success: false}, status: :unauthorized
     end
   end
 
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation)
+    params.require(:user).permit(:username, :email, :contact, :password, :password_confirmation)
   end
 end

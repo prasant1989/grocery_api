@@ -13,5 +13,11 @@ Rails.application.routes.draw do
     end
   end
   resources :catalogs
+  resources :users, only: :create do
+    collection do
+      post 'confirm'
+      post 'login'
+    end
+  end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

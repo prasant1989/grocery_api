@@ -1,11 +1,18 @@
 class User < ApplicationRecord
   has_secure_password
+  has_many :user_roles
+  has_many :roles, -> { order(:name).distinct }, through: :user_roles
+
   validates_presence_of :email
   validates_uniqueness_of :email, case_sensitive: false
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
 
   before_save :downcase_email
   before_save :generate_confirmation_instructions
+
+  def role?(role)
+    roles.any? { |r| r.name.underscore.to_sym == role }
+  end
 
   def confirmation_token_valid?
     (self.confirmation_sent_at + 30.days) > Time.now.utc

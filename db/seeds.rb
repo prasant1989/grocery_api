@@ -56,3 +56,8 @@ catalogs = [
 catalogs.each do |catalog|
   Catalog.find_or_create_by(catalog)
 end
+
+roles = [{name: 'Admin'}, {name: 'Consumer'}]
+roles.each do |role|
+  Role.find_or_create_by(role)
+end

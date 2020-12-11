@@ -1,3 +1,7 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id,:username,:email, :contact
+  attributes :username,:email, :contact, :roles
+
+  def roles
+    object.roles.map(&:name)
+  end
 end
